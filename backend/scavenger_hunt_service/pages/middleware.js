@@ -5,7 +5,7 @@ export function middleware() {
     const res = NextResponse.next()
 
     // add the CORS headers to the response
-    res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
+    res.headers.append('Access-Control-Allow-Origin', 'http://localhost:5173, http://127.0.0.1:5173') // replace this your actual origin
     res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT,OPTIONS')
     res.headers.append('Access-Control-Allow-Headers', '*')
 
