@@ -1,9 +1,12 @@
 const fs = require('fs').promises;
 
 export default async function handler(req, res) {
-    if (req.method === 'OPTIONS') {
-        return res.status(200).send('Preflight ok');
-    }
+    await NextCors(req, res, {
+        // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+     });
 
     let group_name = req.body.group_name;
 

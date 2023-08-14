@@ -1,6 +1,13 @@
 const fs = require('fs').promises;
 
 export default async function handler(req, res) {
+    await NextCors(req, res, {
+        // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+     });
+
     const { group_name } = req.query
     let group_data = JSON.parse(await fs.readFile("./data/groups.json"));
     let group = group_data.find(group => group.group_name === group_name);
