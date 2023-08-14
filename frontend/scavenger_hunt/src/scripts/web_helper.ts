@@ -1,7 +1,6 @@
-async function GET(route: string, data?: object) {
+async function GET(route: string) {
     let response = await fetch(route, {
         method: "GET",
-        body: data != undefined ? JSON.stringify(data) : undefined,
         headers: {"Content-type": "application/json"}
     });
     let result = response.json();
