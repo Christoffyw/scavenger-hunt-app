@@ -1,7 +1,7 @@
 async function GET(route: string) {
     let response = await fetch(route, {
         method: "GET",
-        headers: {"Content-type": "application/json"}
+        headers: {"Content-type": "application/json", "Origin": window.location.origin}
     });
     let result = response.json();
     return result;
