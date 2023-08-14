@@ -1,3 +1,5 @@
+import NextCors from 'nextjs-cors';
+
 const data = { objectives: [
     {
         id: 1,
@@ -18,6 +20,6 @@ export default async function handler(req, res) {
         origin: '*',
         optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
      });
-     
+
     return res.status(200).json(data);
 }

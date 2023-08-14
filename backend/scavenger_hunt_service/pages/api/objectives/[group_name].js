@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+import NextCors from 'nextjs-cors';
 
 export default async function handler(req, res) {
     await NextCors(req, res, {
