@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">scavenger_hunt</string>
+    <string name="title_activity_main">scavenger_hunt</string>
+    <string name="package_name">com.scavenger_hunt</string>
+    <string name="custom_url_scheme">com.scavenger_hunt</string>
+</resources>

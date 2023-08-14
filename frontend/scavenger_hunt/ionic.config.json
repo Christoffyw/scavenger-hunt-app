@@ -1,0 +1,7 @@
+{
+  "name": "scavenger_hunt",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
