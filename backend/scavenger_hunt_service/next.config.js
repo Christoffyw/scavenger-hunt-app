@@ -18,7 +18,7 @@ const nextConfig = {
         return [
             {        
                 source: "/api/:path*",
-                destination: "https://positive-tahr-usually.ngrok-free.app/api/:path*",
+                destination: "https://positive-tahr-usually.ngrok-free.app/:path*",
             }
         ]
     }
