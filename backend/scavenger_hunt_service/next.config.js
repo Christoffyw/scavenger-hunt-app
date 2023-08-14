@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async headers() {
+        console.log("MY CONFIG IS READ")
         return [
             {
                 // matching all API routes
