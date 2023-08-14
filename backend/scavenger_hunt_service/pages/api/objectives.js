@@ -13,6 +13,7 @@ const data = { objectives: [
 
 export default async function handler(req, res) {
     if (req.method === 'OPTIONS') {
+        console.log("PREFLIGHT OK")
         return res.status(200).send('Preflight ok');
     }
     return res.status(200).json(data);
