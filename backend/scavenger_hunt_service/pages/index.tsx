@@ -7,6 +7,7 @@ export default function Page() {
         fetch('./data/groups.json')
           .then((res) => res.json())
           .then((resJson) => {
+            console.log(resJson);
             const data = JSON.parse(resJson);
             setGroupData(data);
         })
