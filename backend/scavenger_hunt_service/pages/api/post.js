@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     group_data.at(group_data.indexOf(group)).posts.push({
         objective_id: objective_id,
         date: date.toLocaleString(),
-        image_path: `/data/${group_name}/${objective_id}.png`,
+        image_path: `./data/${group_name}/${objective_id}.png`,
     });
     await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));
     await fs.writeFile(`./public/data/${group_name}/${objective_id}.png`, image_data, 'base64');

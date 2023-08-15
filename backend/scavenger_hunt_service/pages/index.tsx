@@ -4,7 +4,7 @@ export default function Page() {
     const [group_data, setGroupData] = useState([]);
 
     useEffect(() => {
-        fetch('./public/data/groups.json')
+        fetch('./data/groups.json')
           .then((res) => res.json())
           .then((resJson) => {
             const data = JSON.parse(resJson);
