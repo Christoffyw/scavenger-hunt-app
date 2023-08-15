@@ -89,6 +89,7 @@ export default function Page() {
             <button
                 onClick={() => {
                     axios.post('/api/reset');
+                    window.location.reload();
                 }}
             >
                 Reset
@@ -98,6 +99,7 @@ export default function Page() {
                     axios.post('/api/start_timer', {
                         timer_started: true
                     })
+                    window.location.reload();
                 }}
             >
                 Start Timer
