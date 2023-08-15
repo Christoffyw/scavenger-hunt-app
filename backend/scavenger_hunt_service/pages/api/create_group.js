@@ -13,8 +13,10 @@ export default async function handler(req, res) {
     let group_data = JSON.parse(await fs.readFile("./data/groups.json"));
     let potential_match = group_data.find(group => group.group_name === group_name);
     if(potential_match != undefined) {
-        if(!await fs.existsSync(`./data/${group_name}/`))
-            await fs.mkdir(`./data/${group_name}/`);
+        await fs.access(`./data/${group_name}/`, async (err) => {
+            if(err)
+               await fs.mkdir(`./data/${group_name}/`);
+        });
         return res.status(300).json({ text: 'A group with that name already exists' });
     }
     group_data.push({
