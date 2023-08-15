@@ -1,13 +1,12 @@
-import React from "react";
-import { useEffect } from "react/cjs/react.production.min";
+import React, { useEffect } from "react";
 import { Group } from "../types";
-const fs = require("fs");
+import { promises as fs } from 'fs';
 
 export default function Page() {
     let group_data: Group[] = [];
     useEffect(() => {
         async function get_group_data() {
-            group_data = JSON.parse(await fs.readFile("./data/groups.json"));
+            group_data = JSON.parse(await fs.readFile("./data/groups.json").toString());
         }
         if(group_data.length == 0)
             get_group_data();
