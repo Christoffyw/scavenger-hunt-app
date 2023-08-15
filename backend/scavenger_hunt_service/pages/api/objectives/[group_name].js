@@ -5,8 +5,7 @@ export default async function handler(req, res) {
         return res.status(200).send('Preflight ok');
     }
 
-    const { group_name } = req.query
-    console.log(group_name);
+    const { group_name } = req.query;
     let group_data = JSON.parse(await fs.readFile("./data/groups.json"));
     let group = group_data.find(group => group.group_name === group_name);
     if(group == undefined)
