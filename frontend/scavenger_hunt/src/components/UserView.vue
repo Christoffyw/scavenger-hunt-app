@@ -5,7 +5,7 @@ import { GET, POST } from '../scripts/web_helper';
 import { Objective } from '../scripts/types';
 import { useRoute, useRouter } from 'vue-router';
 
-let time_left_display = ref("Waiting for game to start..."); 
+let time_left_display = ref("Waiting to start..."); 
 let objectives_display = ref<Objective[]>([]);
 
 async function get_timer_status() {
@@ -58,7 +58,7 @@ function seconds_to_timer(seconds: number) {
 function open_camera(objective_id: number) {
     const take_photo = async () => {
         const image = await Camera.getPhoto({
-            quality: 100,
+            quality: 80,
             source: CameraSource.Camera,
             resultType: CameraResultType.Base64
         });
