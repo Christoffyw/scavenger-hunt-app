@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import group_data  from '../data/groups.json'
+import group_data  from '../public/data/groups.json'
 
 export default function Page() {
 
