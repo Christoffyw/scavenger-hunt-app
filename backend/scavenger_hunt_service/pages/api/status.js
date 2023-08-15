@@ -5,16 +5,10 @@ export default async function handler(req, res) {
         return res.status(202).send('Preflight ok');
     }
 
-    const watcher = fs.watch("./public/data/game.json");
-    var file_updated = false;
-    for await (const {eventType, filename} of watcher) {
-        if(file_updated) {
-            let game_data = JSON.parse(await fs.readFile("./public/data/game.json"));
-            if(game_data.timer_started)
-                res.status(200).json({text:"Timer started!"});
-            else
-                res.status(502).send("Timer not stated");
-        }
-        file_updated = true;
-    }
+    setInterval(async () => {
+        const game_data_request = await fetch("./public/data/game.json");
+        let game_data = await game_data_request.json();
+        if(game_data.timer_started)
+            return res.status(200).json({text:"Timer started!"});
+    }, 500);
 }
