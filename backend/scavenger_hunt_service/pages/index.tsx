@@ -4,13 +4,15 @@ export default function Page() {
     const [group_data, setGroupData] = useState([]);
 
     useEffect(() => {
-        fetch('./data/groups.json')
-          .then((res) => res.json())
-          .then((resJson) => {
-            console.log(resJson);
-            //const data = JSON.parse(resJson);
-            setGroupData(resJson);
-        })
+        const intervalID = setInterval(() =>  {
+            fetch('./data/groups.json')
+            .then((res) => res.json())
+            .then((resJson) => {
+                setGroupData(resJson);
+            })
+        }, 1000);
+    
+        return () => clearInterval(intervalID);
       }, [])
 
     const group_data_list = group_data.map(group =>
@@ -21,7 +23,7 @@ export default function Page() {
                     <div>
                         <p>Objective {post.objective_id}</p>
                         <p>Submited At: {post.date}</p>
-                        <img src={post.image_path} />
+                        <img src={"data:image/png;base64," + post.image_path} width="500"/>
                     </div>
                 )}
             </div>

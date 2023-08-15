@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     if(image_data == undefined)
         res.status(400).json({ text: 'Missing `image_data` in request body!' });
     
-    let group_data = JSON.parse(await fs.readFile("./public/data/groups.json"));
+    let group_data = JSON.parse(await fs.readFile("./app/data/groups.json"));
     let group = group_data.find(group => group.group_name === group_name);
     if(group == undefined)
         return res.status(300).json({ text: 'A group with that name does not exist' });
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
     group_data.at(group_data.indexOf(group)).posts.push({
         objective_id: objective_id,
         date: date.toLocaleString(),
-        image_path: `./data/${group_name}/${objective_id}.png`,
+        image_path: image_data//`./data/${group_name}/${objective_id}.png`,
     });
-    await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));
-    await fs.writeFile(`./public/data/${group_name}/${objective_id}.png`, image_data, 'base64');
+    await fs.writeFile("./app/data/groups.json", JSON.stringify(group_data, null, 3));
+    await fs.writeFile(`./app/data/${group_name}/${objective_id}.png`, image_data, 'base64');
     console.log("Updated storage!")
     res.status(200).json({ text: `Objective succesfully posted!` });
 }
