@@ -1,7 +1,16 @@
-import React, { useEffect } from "react";
-import group_data  from '../public/data/groups.json'
+import React, { useState, useEffect } from "react";
 
 export default function Page() {
+    const [group_data, setGroupData] = useState([]);
+
+    useEffect(() => {
+        fetch('./public/data/groups.json')
+          .then((res) => res.json())
+          .then((resJson) => {
+            const data = JSON.parse(resJson);
+            setGroupData(data);
+        })
+      }, [])
 
     const group_data_list = group_data.map(group =>
         <div>
