@@ -34,3 +34,11 @@ export default async function handler(req, res) {
     console.log("Updated storage!")
     res.status(200).json({ text: `Objective succesfully posted!` });
 }
+
+export const config = {
+    api: {
+      bodyParser: {
+        sizeLimit: '20mb',
+      },
+    },
+  }
