@@ -9,4 +9,4 @@ type Group = {
     posts: Post[];
 };
 
-export { Post, Group }
+export type { Post, Group }
