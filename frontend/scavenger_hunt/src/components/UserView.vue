@@ -23,6 +23,7 @@ onMounted(async () => {
 });
 
 const route = useRoute()
+const router = useRouter();
 const group_name: string | string[] = route.params.group_name;
 
 function seconds_to_timer(seconds: number) {
@@ -61,20 +62,23 @@ function get_objective_icon(state: boolean) {
 
 var time_left = 10800;
 
-setInterval(function () {
+var timerInterval = setInterval(function () {
     time_left_display.value = seconds_to_timer(time_left);
     time_left--;
+    if(time_left <= 0)
+        clearInterval(timerInterval);
 }, 1000);
 
 // SYNC WITH SERVER
-setInterval(async function () {
+var syncInterval = setInterval(async function () {
     let temp_objectives = []
     let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
     let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
     
     if(completed_objectives.text != undefined) {
-        const router = useRouter();
         router.push("/");
+        clearInterval(syncInterval);
+        return;
     }
 
     let objectives = total_objectives.objectives;

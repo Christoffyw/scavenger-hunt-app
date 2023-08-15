@@ -23,11 +23,16 @@ function Panel() {
         },
     })
 
-    const mutation = useMutation({
-        mutationFn: (newTodo: object) => {
-            return axios.post('/api/modify', newTodo)
+    const remove_post = useMutation({
+        mutationFn: (body: object) => {
+            return axios.post('/api/remove_group', body)
         },
-      })
+    })
+    const remove_group = useMutation({
+        mutationFn: (body: object) => {
+            return axios.post('/api/remove_post', body)
+        },
+    })
 
     return (
         <div>
@@ -37,9 +42,9 @@ function Panel() {
                         <h2>{group.group_name}</h2>
                         <button
                             onClick={() => {
-                                let group_id = query.data.indexOf(query.data.find(g => g.group_name == group.group_name));
-                                query.data.splice(group_id, 1);
-                                mutation.mutate(query.data);
+                                remove_group.mutate({
+                                    group_name: group.group_name
+                                });
                             }}
                         >
                             Remove Group
@@ -49,9 +54,10 @@ function Panel() {
                                 <div key={post.objective_id}>
                                     <button
                                         onClick={() => {
-                                            let post_id = group.posts.indexOf(group.posts.find(p => p.objective_id == post.objective_id));
-                                            group.posts.splice(post_id, 1);
-                                            mutation.mutate(query.data);
+                                            remove_post.mutate({
+                                                group_name: group.group_name,
+                                                objective_id: post.objective_id
+                                            });
                                         }}
                                     >
                                         Remove Post
