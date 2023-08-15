@@ -25,12 +25,12 @@ function Panel() {
 
     const remove_post = useMutation({
         mutationFn: (body: object) => {
-            return axios.post('/api/remove_group', body)
+            return axios.post('/api/remove_post', body)
         },
     })
     const remove_group = useMutation({
         mutationFn: (body: object) => {
-            return axios.post('/api/remove_post', body)
+            return axios.post('/api/remove_group', body)
         },
     })
 
