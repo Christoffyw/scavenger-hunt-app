@@ -10,7 +10,7 @@ import { POST } from '../scripts/web_helper';
     let group_data = {
       group_name: group_name.value
     };
-    let result = await POST("https://positive-tahr-usually.ngrok-free.app/api/create_group", group_data);
+    let result = await POST("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/create_group", group_data);
     console.log(result);
     router.push("/session/" + group_name.value);
   }

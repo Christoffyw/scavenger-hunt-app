@@ -9,8 +9,8 @@ let time_left_display = ref("00:00:00");
 let objectives_display = ref<Objective[]>([]);
 
 onMounted(async () => {
-    let total_objectives = await GET("https://positive-tahr-usually.ngrok-free.app/api/objectives");
-    let completed_objectives = await GET("https://positive-tahr-usually.ngrok-free.app/api/objectives/" + group_name);
+    let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
+    let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
         objectives_display.value.push({
@@ -46,7 +46,7 @@ function open_camera(objective_id: number) {
             timestamp: Date.now(),
             image_data: image_data
         };
-        let result = await POST("https://positive-tahr-usually.ngrok-free.app/api/post", post_data);
+        let result = await POST("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/post", post_data);
         console.log(result);
         let objective = objectives_display.value.find(objective => objective.id === objective_id);
         if(objective)
@@ -56,7 +56,7 @@ function open_camera(objective_id: number) {
 }
 
 function get_objective_icon(state: boolean) {
-    return state ? "../src/assets/checkmark-outline.svg" : "../src/assets/camera-outline.svg";
+    return state ? "/assets/checkmark-outline.svg" : "/assets/camera-outline.svg";
 }
 
 var time_left = 10800;
@@ -69,8 +69,9 @@ setInterval(function () {
 // SYNC WITH SERVER
 setInterval(async function () {
     let temp_objectives = []
-    let total_objectives = await GET("https://positive-tahr-usually.ngrok-free.app/api/objectives");
-    let completed_objectives = await GET("https://positive-tahr-usually.ngrok-free.app/api/objectives/" + group_name);
+    let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
+    let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
+    console.log(completed_objectives);
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
         temp_objectives.push({
