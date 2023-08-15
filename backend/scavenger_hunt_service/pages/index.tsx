@@ -1,16 +1,7 @@
 import React, { useEffect } from "react";
-import { Group } from "../types";
-import { promises as fs } from 'fs';
+import group_data  from '../data/groups.json'
 
 export default function Page() {
-    let group_data: Group[] = [];
-    useEffect(() => {
-        async function get_group_data() {
-            group_data = JSON.parse(await fs.readFile("./data/groups.json").toString());
-        }
-        if(group_data.length == 0)
-            get_group_data();
-    })
 
     const group_data_list = group_data.map(group =>
         <div>
