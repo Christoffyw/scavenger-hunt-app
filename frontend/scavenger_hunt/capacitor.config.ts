@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.scavenger_hunt',
-  appName: 'scavenger_hunt',
+  appId: 'me.christopherw.scavengerhunt',
+  appName: 'Scavenger Hunt',
   webDir: 'dist',
   server: {
     androidScheme: 'https'
