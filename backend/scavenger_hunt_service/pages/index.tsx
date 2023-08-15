@@ -86,6 +86,22 @@ export default function Page() {
     return (
         <QueryClientProvider client={queryClient}>
             <h1>Scavenger Hunt Control Panel</h1>
+            <button
+                onClick={() => {
+                    axios.post('/api/reset');
+                }}
+            >
+                Reset
+            </button>
+            <button
+                onClick={() => {
+                    axios.post('/api/start_timer', {
+                        timer_started: true
+                    })
+                }}
+            >
+                Start Timer
+            </button>
             <div>
                 <Panel />
             </div>
