@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { GET, POST } from '../scripts/web_helper';
 import { Objective } from '../scripts/types';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 let time_left_display = ref("00:00:00"); 
 let objectives_display = ref<Objective[]>([]);
@@ -71,7 +71,12 @@ setInterval(async function () {
     let temp_objectives = []
     let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
     let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
-    console.log(completed_objectives);
+    
+    if(completed_objectives.text != undefined) {
+        const router = useRouter();
+        router.push("/");
+    }
+
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
         temp_objectives.push({
