@@ -27,11 +27,17 @@ function Panel() {
         mutationFn: (body: object) => {
             return axios.post('/api/remove_post', body)
         },
+        onSuccess: data => {
+            queryClient.setQueryData(['groups'], data);
+        }
     })
     const remove_group = useMutation({
         mutationFn: (body: object) => {
             return axios.post('/api/remove_group', body)
         },
+        onSuccess: data => {
+            queryClient.setQueryData(['groups'], data);
+        }
     })
 
     return (
