@@ -5,8 +5,28 @@ import { GET, POST } from '../scripts/web_helper';
 import { Objective } from '../scripts/types';
 import { useRoute, useRouter } from 'vue-router';
 
-let time_left_display = ref("00:00:00"); 
+let time_left_display = ref("Waiting for game to start..."); 
 let objectives_display = ref<Objective[]>([]);
+
+async function get_timer_status() {
+    let response = await fetch("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/status");
+
+    if (response.status == 502) {
+        // Connection timed out. Reconnecting...
+        await get_timer_status();
+    } else if (response.status != 200 && response.status != 202) {
+        console.log(response.statusText);
+
+        // Internal error. Reconnecting...
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await get_timer_status();
+    } else {
+        // Timer started!
+        let result = await response.text();
+        console.log(result);
+        start_timer();
+    }
+}
 
 onMounted(async () => {
     let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
@@ -20,6 +40,8 @@ onMounted(async () => {
             completed: completed_objectives.includes(objectives[objective_index].id)
         });
     }
+
+    get_timer_status();
 });
 
 const route = useRoute()
@@ -61,13 +83,16 @@ function get_objective_icon(state: boolean) {
 }
 
 var time_left = 10800;
+var timerInterval: NodeJS.Timer;
+function start_timer() {
+    timerInterval = setInterval(function () {
+        time_left_display.value = seconds_to_timer(time_left);
+        time_left--;
+        if(time_left <= 0)
+            clearInterval(timerInterval);
+    }, 1000);
+}
 
-var timerInterval = setInterval(function () {
-    time_left_display.value = seconds_to_timer(time_left);
-    time_left--;
-    if(time_left <= 0)
-        clearInterval(timerInterval);
-}, 1000);
 
 // SYNC WITH SERVER
 var syncInterval = setInterval(async function () {

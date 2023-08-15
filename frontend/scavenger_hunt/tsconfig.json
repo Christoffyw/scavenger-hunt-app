@@ -9,8 +9,6 @@
     "paths": {
         "@/*": ["./src/*"]
     },
-    "lib": ["es2022", "dom"],
-    "module": "es2022",
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
