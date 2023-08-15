@@ -8,8 +8,8 @@ export default function Page() {
           .then((res) => res.json())
           .then((resJson) => {
             console.log(resJson);
-            const data = JSON.parse(resJson);
-            setGroupData(data);
+            //const data = JSON.parse(resJson);
+            setGroupData(resJson);
         })
       }, [])
 
