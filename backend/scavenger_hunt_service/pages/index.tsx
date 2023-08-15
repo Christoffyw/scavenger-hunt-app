@@ -1,5 +1,39 @@
 import React from "react";
+import { useEffect } from "react/cjs/react.production.min";
+import { Group } from "../types";
+const fs = require("fs");
 
 export default function Page() {
-    return <h1>Scavenger Hunt Control Panel</h1>
+    let group_data: Group[] = [];
+    useEffect(() => {
+        async function get_group_data() {
+            group_data = JSON.parse(await fs.readFile("./data/groups.json"));
+        }
+        if(group_data.length == 0)
+            get_group_data();
+    })
+
+    const group_data_list = group_data.map(group =>
+        <div>
+            <h2>{group.group_name}</h2>
+            <div>
+                {group.posts.map(post => 
+                    <div>
+                        <p>Objective {post.objective_id}</p>
+                        <p>Submited At: {post.date}</p>
+                        <img src={post.image_path} />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    return (
+        <div>
+            <h1>Scavenger Hunt Control Panel</h1>
+            <div>
+                { group_data_list }
+            </div>
+        </div>
+    )
 }
