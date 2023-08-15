@@ -7,6 +7,7 @@ export default async function handler(req, res) {
 
     let group_name = req.body.group_name;
 
+    let group_data = JSON.parse(await fs.readFile("./public/data/groups.json"));
     let group = group_data.find(group => group.group_name === group_name);
     if(group == undefined)
         return res.status(300).json({ text: 'A group with name: "' + group_name + '" does not exist' });
