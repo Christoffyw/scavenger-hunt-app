@@ -7,6 +7,8 @@ import {
     useMutation,
 } from '@tanstack/react-query'
 import axios from 'axios'
+import { Group } from "../types";
+import { rejects } from "assert";
 
 const queryClient = new QueryClient()
 
@@ -15,11 +17,19 @@ function Panel() {
     const queryClient = useQueryClient()
     const query = useQuery({
         queryKey: ['groups'],
-        queryFn: async () => {
-          const { data } = await axios.get(
-            './data/groups.json',
-          )
-          return data
+        queryFn: () => {
+            return new Promise<Group[]>((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', './data/groups.json');
+                xhr.onload = function(e) {
+                    if (this.status == 200) {
+                        resolve(JSON.parse(this.responseText));
+                    } else {
+                        reject();
+                    }
+                };
+                xhr.send();
+            })
         },
     })
 
