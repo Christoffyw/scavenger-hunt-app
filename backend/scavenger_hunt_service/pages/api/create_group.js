@@ -25,7 +25,6 @@ export default async function handler(req, res) {
         posts: []
     })
     await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));
-    await fs.mkdir(`./public/data/${group_name}/`);
     console.log("Updated storage!")
     res.status(200).json({ text: `Created ${group_name} successfully!`});
 }
