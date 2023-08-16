@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         group_folder_exists = false;
     }
     if(group_folder_exists)
-        await fs.rmdir(`./public/data/${group_name}/`);
+        await fs.rm(`./public/data/${group_name}/`, { recursive: true, force: true });
 
     console.log("Updated storage!")
     res.status(200).json({ text: `Objective succesfully posted!` });

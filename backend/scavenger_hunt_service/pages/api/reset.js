@@ -14,7 +14,7 @@ export default async function handler(req, res) {
             group_folder_exists = false;
         }
         if(group_folder_exists)
-            await fs.rmdir(`./public/data/${group.group_name}/`);
+            await fs.rm(`./public/data/${group.group_name}/`, { recursive: true, force: true });
     })
 
     await fs.writeFile("./public/data/groups.json", JSON.stringify([], null, 3));
