@@ -99,7 +99,9 @@ export default function Page() {
             <button
                 onClick={() => {
                     axios.post('/api/reset');
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
                 }}
             >
                 Reset

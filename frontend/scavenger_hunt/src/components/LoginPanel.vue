@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
-import { POST } from '../scripts/web_helper';
+import { POST, API_URL } from '../scripts/web_helper';
 
   const router = useRouter();
   let group_name = ref("");
@@ -10,7 +10,7 @@ import { POST } from '../scripts/web_helper';
     let group_data = {
       group_name: group_name.value
     };
-    let result = await POST("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/create_group", group_data);
+    let result = await POST(API_URL + "/api/create_group", group_data);
     console.log(result);
     router.push("/session/" + group_name.value);
   }

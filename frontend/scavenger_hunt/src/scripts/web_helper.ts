@@ -16,4 +16,6 @@ async function POST(route: string, data: object) {
     return result;
 }
 
-export { GET, POST }
+const API_URL = "https://scavenger-hunt.ca"
+
+export { GET, POST, API_URL }

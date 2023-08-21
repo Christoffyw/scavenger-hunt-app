@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { GET, POST } from '../scripts/web_helper';
+import { GET, POST, API_URL } from '../scripts/web_helper';
 import { Objective } from '../scripts/types';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -9,7 +9,7 @@ let time_left_display = ref("Waiting to start...");
 let objectives_display = ref<Objective[]>([]);
 
 async function get_timer_status() {
-    let response = await fetch("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/status");
+    let response = await fetch(API_URL + "/api/status");
 
     if (response.status == 502) {
         // Connection timed out. Reconnecting...
@@ -29,8 +29,8 @@ async function get_timer_status() {
 }
 
 onMounted(async () => {
-    let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
-    let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
+    let total_objectives = await GET(API_URL + "/api/objectives");
+    let completed_objectives = await GET(API_URL + "/api/objectives/" + group_name);
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
         objectives_display.value.push({
@@ -69,7 +69,7 @@ function open_camera(objective_id: number) {
             timestamp: Date.now(),
             image_data: image_data
         };
-        let result = await POST("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/post", post_data);
+        let result = await POST(API_URL + "/api/post", post_data);
         console.log(result);
         let objective = objectives_display.value.find(objective => objective.id === objective_id);
         if(objective)
@@ -97,8 +97,8 @@ function start_timer() {
 // SYNC WITH SERVER
 var syncInterval = setInterval(async function () {
     let temp_objectives = []
-    let total_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives");
-    let completed_objectives = await GET("https://characteristics-metropolitan-analyze-decor.trycloudflare.com/api/objectives/" + group_name);
+    let total_objectives = await GET(API_URL + "/api/objectives");
+    let completed_objectives = await GET(API_URL + "/api/objectives/" + group_name);
     
     if(completed_objectives.text != undefined) {
         router.push("/");
