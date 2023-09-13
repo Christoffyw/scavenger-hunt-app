@@ -2,46 +2,31 @@
 import { onMounted, ref } from 'vue';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { GET, POST, API_URL } from '../scripts/web_helper';
-import { Objective } from '../scripts/types';
+import { GameStatus, Objective } from '../scripts/types';
 import { useRoute, useRouter } from 'vue-router';
 
+let game_status = ref<GameStatus>({
+    status: false,
+    objectives: [],
+    text: undefined
+});
 let time_left_display = ref("Waiting to start..."); 
 let objectives_display = ref<Objective[]>([]);
 
-async function get_timer_status() {
-    let response = await fetch(API_URL + "/api/status");
-
-    if (response.status == 502) {
-        // Connection timed out. Reconnecting...
-        await get_timer_status();
-    } else if (response.status != 200 && response.status != 202) {
-        console.log(response.statusText);
-
-        // Internal error. Reconnecting...
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await get_timer_status();
-    } else {
-        // Timer started!
-        let result = await response.text();
-        console.log(result);
-        start_timer();
-    }
-}
-
 onMounted(async () => {
     let total_objectives = await GET(API_URL + "/api/objectives");
-    let completed_objectives = await GET(API_URL + "/api/objectives/" + group_name);
+    game_status.value = await GET(API_URL + "/api/objectives/" + group_name);
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
         objectives_display.value.push({
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
-            completed: completed_objectives.includes(objectives[objective_index].id)
+            completed: game_status.value.objectives.includes(objectives[objective_index].id)
         });
     }
-
-    get_timer_status();
+    if(game_status.value.status)
+        start_timer();
 });
 
 const route = useRoute()
@@ -84,7 +69,11 @@ function get_objective_icon(state: boolean) {
 
 var time_left = 10800;
 var timerInterval: NodeJS.Timer;
+var time_started = false;
 function start_timer() {
+    if(time_started)
+        return;
+    time_started = true;
     timerInterval = setInterval(function () {
         time_left_display.value = seconds_to_timer(time_left);
         time_left--;
@@ -96,11 +85,12 @@ function start_timer() {
 
 // SYNC WITH SERVER
 var syncInterval = setInterval(async function () {
-    let temp_objectives = []
     let total_objectives = await GET(API_URL + "/api/objectives");
-    let completed_objectives = await GET(API_URL + "/api/objectives/" + group_name);
+    let response_json = await GET(API_URL + "/api/objectives/" + group_name);
+    game_status.value = response_json;
     
-    if(completed_objectives.text != undefined) {
+    console.log("RESPONSE: " + JSON.stringify(game_status.value.text))
+    if(game_status.value == undefined || game_status.value.text != undefined) {
         router.push("/");
         clearInterval(syncInterval);
         return;
@@ -108,14 +98,15 @@ var syncInterval = setInterval(async function () {
 
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
-        temp_objectives.push({
+        objectives_display.value.push({
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
-            completed: completed_objectives.includes(objectives[objective_index].id)
+            completed: game_status.value.objectives.includes(objectives[objective_index].id)
         });
     }
-    objectives_display.value = temp_objectives;
+    if(game_status.value.status)
+        start_timer();
 }, 5000);
 
 </script>
@@ -123,8 +114,8 @@ var syncInterval = setInterval(async function () {
 <template>
     <h2>{{ group_name }}</h2>
     <h1 class="count-down">{{ time_left_display }}</h1>
-    <h2 class="label">Objectives</h2>
-    <div class="objectives">
+    <div v-if="time_started" class="objectives">
+        <h2 class="label">Objectives</h2>
         <div class="objective" :class="{ incomplete: !objective.completed, complete: objective.completed }" v-for="objective in objectives_display" @click="open_camera(objective.id)">
             <div class="info">
                 <h3>{{ objective.title }}</h3>

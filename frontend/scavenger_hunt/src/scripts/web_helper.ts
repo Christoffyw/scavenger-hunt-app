@@ -17,6 +17,7 @@ async function POST(route: string, data: object) {
     return result;
 }
 
-const API_URL = "https://scavenger-hunt.ca"
+const prod = false;
+const API_URL = prod ? "https://scavenger-hunt.ca" : "http://localhost:3000"
 
 export { GET, POST, API_URL }

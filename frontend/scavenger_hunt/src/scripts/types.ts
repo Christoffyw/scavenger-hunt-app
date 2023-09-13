@@ -11,4 +11,10 @@ type Coordinate = {
     latitude: number;
 }
 
-export type { Coordinate, Objective };
+type GameStatus = {
+    text?: string;
+    status: boolean;
+    objectives: Objective[];
+}
+
+export type { Coordinate, Objective, GameStatus };
