@@ -23,10 +23,15 @@ export default async function handler(req, res) {
     if(group == undefined)
         return res.status(300).json({ text: 'A group with that name does not exist' });
 
+    let objective = group.posts.find(objective => objective.objective_id === objective_id);
+    if(objective != undefined) {
+        group_data.at(group_data.indexOf(group)).posts.splice(group.posts.indexOf(objective), 1);
+    }
+
     let date = new Date(Number(timestamp));
     group_data.at(group_data.indexOf(group)).posts.push({
         objective_id: objective_id,
-        date: date.toLocaleString(),
+        date: date.toLocaleString("en-US", {timeZone: "America/New_York"}),
         image_path: image_data//`./data/${group_name}/${objective_id}.png`,
     });
     await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));

@@ -2,6 +2,7 @@ type Post = {
     objective_id: number;
     date: string;
     image_path: string;
+    rejected: boolean;
 }
 
 type Group = {
@@ -9,4 +10,14 @@ type Group = {
     posts: Post[];
 };
 
-export type { Post, Group }
+type Objective = {
+    id: number;
+    title: string;
+    description: string;
+}
+
+type Objectives = {
+    objectives: Objective[];
+}
+
+export type { Post, Group, Objectives, Objective }

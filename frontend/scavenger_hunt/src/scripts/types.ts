@@ -3,7 +3,9 @@ type Objective = {
     title: string;
     description: string;
     location?: Coordinate;
+    rejected?: boolean;
     completed?: boolean;
+    uploading?: boolean;
 }
 
 type Coordinate = {
@@ -15,6 +17,7 @@ type GameStatus = {
     text?: string;
     status: boolean;
     objectives: Objective[];
+    rejected: Objective[];
 }
 
 export type { Coordinate, Objective, GameStatus };

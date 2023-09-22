@@ -15,13 +15,19 @@ export default async function handler(req, res) {
     let game_data = JSON.parse(game_data_request);
     let response = {
         status: game_data.timer_started,
-        objectives: []
+        objectives: [],
+        rejected: []
     }
     let completed_objective_ids = [];
+    let rejected_objective_ids = [];
     for(let post_id in group.posts) {
         let post = group.posts[post_id];
-        completed_objective_ids.push(post.objective_id);
+        if(post.rejected)
+            rejected_objective_ids.push(post.objective_id);
+        else
+            completed_objective_ids.push(post.objective_id);
     }
     response.objectives = completed_objective_ids;
+    response.rejected = rejected_objective_ids;
     return res.status(200).json(response);
   }

@@ -1,17 +1,9 @@
-const data = { objectives: [
-    {
-        id: 1,
-        title: "With the Fris? No Way!",
-        description: "Pose with a frisbee."
-    },
-    {
-        id: 2,
-        title: "Burger Boulevard",
-        description: "Find 3 restaurants side-by-side."
-    }
-]}
+const fs = require('fs').promises;
 
 export default async function handler(req, res) {
+
+    let data = JSON.parse(await fs.readFile("./public/data/objectives.json"));
+
     if (req.method === 'OPTIONS') {
         return res.status(200).send('Preflight ok');
     }

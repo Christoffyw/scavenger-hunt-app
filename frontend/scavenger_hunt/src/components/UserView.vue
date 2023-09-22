@@ -8,6 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 let game_status = ref<GameStatus>({
     status: false,
     objectives: [],
+    rejected: [],
     text: undefined
 });
 let time_left_display = ref("Waiting to start..."); 
@@ -22,7 +23,8 @@ onMounted(async () => {
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
-            completed: game_status.value.objectives.includes(objectives[objective_index].id)
+            rejected: game_status.value.rejected.includes(objectives[objective_index].id),
+            completed: game_status.value.objectives.includes(objectives[objective_index].id) && !game_status.value.rejected.includes(objectives[objective_index].id)
         });
     }
     if(game_status.value.status)
@@ -43,7 +45,7 @@ function seconds_to_timer(seconds: number) {
 function open_camera(objective_id: number) {
     const take_photo = async () => {
         const image = await Camera.getPhoto({
-            quality: 80,
+            quality: 70,
             source: CameraSource.Camera,
             resultType: CameraResultType.Base64
         });
@@ -54,17 +56,28 @@ function open_camera(objective_id: number) {
             timestamp: Date.now(),
             image_data: image_data
         };
+        let objective = objectives_display.value.find(objective => objective.id === objective_id);
+
+        if(objective) {
+            objective.uploading = true;
+        }
         let result = await POST(API_URL + "/api/post", post_data);
         console.log(result);
-        let objective = objectives_display.value.find(objective => objective.id === objective_id);
-        if(objective)
+        if(objective) {
             objective.completed = true;
+            objective.uploading = false;
+        }
     };
     take_photo();
 }
 
-function get_objective_icon(state: boolean) {
-    return state ? "/assets/checkmark-outline.svg" : "/assets/camera-outline.svg";
+function get_objective_icon(objective: Objective) {
+    if(objective.completed)
+        return "/assets/checkmark-outline.svg";
+    else if(objective.rejected)
+        return "/assets/close-outline.svg";
+    else
+        return "/assets/camera-outline.svg";
 }
 
 var time_left = 10800;
@@ -97,12 +110,15 @@ var syncInterval = setInterval(async function () {
     }
 
     let objectives = total_objectives.objectives;
+
+    objectives_display.value = [];
     for(let objective_index in objectives) {
         objectives_display.value.push({
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
-            completed: game_status.value.objectives.includes(objectives[objective_index].id)
+            rejected: game_status.value.rejected.includes(objectives[objective_index].id),
+            completed: game_status.value.objectives.includes(objectives[objective_index].id) && !game_status.value.rejected.includes(objectives[objective_index].id)
         });
     }
     if(game_status.value.status)
@@ -116,13 +132,14 @@ var syncInterval = setInterval(async function () {
     <h1 class="count-down">{{ time_left_display }}</h1>
     <div v-if="time_started" class="objectives">
         <h2 class="label">Objectives</h2>
-        <div class="objective" :class="{ incomplete: !objective.completed, complete: objective.completed }" v-for="objective in objectives_display" @click="open_camera(objective.id)">
+        <div class="objective" :class="{ rejected: objective.rejected, incomplete: !objective.completed, complete: objective.completed }" v-for="objective in objectives_display" @click="open_camera(objective.id)">
             <div class="info">
                 <h3>{{ objective.title }}</h3>
                 <p>{{ objective.description }}</p>
             </div>
             <div class="preview">
-                <img class="icon" :class="{ 'complete-icon': objective.completed }" :src="get_objective_icon(objective.completed == undefined ? false : objective.completed)" />
+                <img v-if="!objective.uploading" class="icon" :class="{ 'complete-icon': objective.completed, 'rejected-icon': objective.rejected }" :src="get_objective_icon(objective)" />
+                <div v-if="objective.uploading" class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
         </div>
         <!--<div class="complete objective">
@@ -141,13 +158,21 @@ var syncInterval = setInterval(async function () {
 .complete-icon {
     filter: invert(29%) sepia(27%) saturate(998%) hue-rotate(69deg) brightness(99%) contrast(87%);
 }
+
+.rejected-icon {
+    filter: invert(9%) sepia(94%) saturate(4743%) hue-rotate(357deg) brightness(113%) contrast(113%);
+}
+
 .complete {
     border-color: #30632e;
     color: #30632e;
 }
 .incomplete {
     border-color: #213547;
-    border-width: 1px;
+}
+.rejected {
+    border-color: #c90000;
+    color: #ad3535;
 }
 
 .description {
@@ -192,5 +217,41 @@ var syncInterval = setInterval(async function () {
     box-sizing: border-box;  
     width: 100%;
     display: table;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 46px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 8px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #213547 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
