@@ -13,6 +13,9 @@ import { rejects } from "assert";
 const queryClient = new QueryClient()
 
 function sort(group: Group, objectives: any, remove_post: any, reject: any) {
+    if(group.posts.length < 1)
+        return null;
+
     group.posts.sort(function(a, b){
         return a.objective_id - b.objective_id;
     })
