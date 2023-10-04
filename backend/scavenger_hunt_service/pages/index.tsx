@@ -370,7 +370,9 @@ export default function Page() {
                     <button
                         onClick={() => {
                             axios.post('/api/start_timer', {
-                                timer_started: true
+                                timer_started: true,
+                                start_time: Date.now(),
+                                end_time: Date.now() + (3*60*60*1000)
                             })
                         }}
                     >

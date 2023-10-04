@@ -16,6 +16,7 @@ export default async function handler(req, res) {
     let objective_data = JSON.parse(await fs.readFile("./public/data/objectives.json"));
     let response = {
         status: game_data.timer_started,
+        end_time: game_data.end_time,
         total_score: 0,
         objectives: [],
         rejected: []

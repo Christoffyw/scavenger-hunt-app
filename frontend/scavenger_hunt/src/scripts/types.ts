@@ -17,6 +17,7 @@ type Coordinate = {
 type GameStatus = {
     text?: string;
     status: boolean;
+    end_time: number;
     total_score: number;
     objectives: Objective[];
     rejected: Objective[];

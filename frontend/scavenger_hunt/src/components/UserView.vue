@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 let game_status = ref<GameStatus>({
     status: false,
+    end_time: 0,
     total_score: 0,
     objectives: [],
     rejected: [],
@@ -45,6 +46,9 @@ function seconds_to_timer(seconds: number) {
 }
 
 async function open_camera(objective_id: number) {
+    if(time_left <= 0)
+        return;
+
     let objective = objectives_display.value.find(objective => objective.id === objective_id);
     if(objective) {
         objective.uploading = true;
@@ -86,8 +90,10 @@ function get_objective_icon(objective: Objective) {
         return "/assets/checkmark-outline.svg";
     else if(objective.rejected)
         return "/assets/close-outline.svg";
-    else
+    else if(time_left > 0)
         return "/assets/camera-outline.svg";
+    else
+        return "";
 }
 
 var time_left = 10800;
@@ -97,9 +103,17 @@ function start_timer() {
     if(time_started)
         return;
     time_started = true;
+
+    let time_offset = game_status.value.end_time - Date.now();
+    time_offset /= 1000;
+    time_offset = Math.round(time_offset);
+    time_offset = Math.max(time_offset, 0);
+
+    time_left = time_offset;
+
     timerInterval = setInterval(function () {
-        time_left_display.value = seconds_to_timer(time_left);
         time_left--;
+        time_left_display.value = seconds_to_timer(time_left);
         if(time_left <= 0)
             clearInterval(timerInterval);
     }, 1000);
@@ -263,8 +277,7 @@ var syncInterval = setInterval(async function () {
     min-height: 65px;
     line-height: 65px;
     text-align: center;
-    max-width: 75%;
-    min-width: 15%;
+    width: 50px;
     border-right-width: 2px;
     border-right-color: #48484877;
     border-right-style: solid;
