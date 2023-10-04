@@ -44,9 +44,9 @@ function sort(group: Group, objectives: any, remove_post: any, reject: any) {
                                         group_name: group.group_name,
                                         objective_id: post.objective_id
                                     });
-                                }} className="reject-button"
+                                }} className={post.rejected ? "approve-button":"reject-button"}
                             >
-                                Reject
+                                {post.rejected ? "Approve" : "Reject"} 
                             </button>
                         </div>
                         
@@ -131,6 +131,15 @@ function sort(group: Group, objectives: any, remove_post: any, reject: any) {
                 .reject-button:active {
                     background-color: #c90000;
                     border-color: #3a0000;
+                    color: #ffffff;
+                }
+                .approve-button {
+                    background-color: #b3f5b1;
+                    border-color: #30632e;
+                }
+                .approve-button:active {
+                    background-color: #61df5d;
+                    border-color: #30632e;
                     color: #ffffff;
                 }
 
@@ -363,7 +372,6 @@ export default function Page() {
                             axios.post('/api/start_timer', {
                                 timer_started: true
                             })
-                            window.location.reload();
                         }}
                     >
                         Start Timer

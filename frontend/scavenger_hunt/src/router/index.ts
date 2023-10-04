@@ -12,11 +12,6 @@ const router = createRouter({
             component: () => import("../components/UserView.vue"),
         },
         {
-            path: "/admin",
-            props: true,
-            component: () => import("../components/AdminView.vue"),
-        },
-        {
             path: "/:catchAll(.*)",
             component: () => import("../components/404View.vue"),
         },

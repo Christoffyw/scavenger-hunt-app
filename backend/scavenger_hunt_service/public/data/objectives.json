@@ -3,11 +3,13 @@
     {
         "id": 1,
         "title": "With the Fris? No Way!",
-        "description": "Pose with a frisbee."
+        "description": "Pose with a frisbee.",
+        "score": 10
     },
     {
         "id": 2,
         "title": "Burger Boulevard",
-        "description": "Find 3 restaurants side-by-side."
+        "description": "Find 3 restaurants side-by-side.",
+        "score": 5
     }
 ]}

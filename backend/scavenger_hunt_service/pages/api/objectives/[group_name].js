@@ -13,8 +13,10 @@ export default async function handler(req, res) {
 
     const game_data_request = await fs.readFile("./public/data/game.json");
     let game_data = JSON.parse(game_data_request);
+    let objective_data = JSON.parse(await fs.readFile("./public/data/objectives.json"));
     let response = {
         status: game_data.timer_started,
+        total_score: 0,
         objectives: [],
         rejected: []
     }
@@ -24,8 +26,11 @@ export default async function handler(req, res) {
         let post = group.posts[post_id];
         if(post.rejected)
             rejected_objective_ids.push(post.objective_id);
-        else
+        else {
             completed_objective_ids.push(post.objective_id);
+            let objective = objective_data.objectives.find(objective => objective.id == post.objective_id);
+            response.total_score += objective.score;
+        }
     }
     response.objectives = completed_objective_ids;
     response.rejected = rejected_objective_ids;

@@ -2,6 +2,7 @@ type Objective = {
     id: number;
     title: string;
     description: string;
+    score: number;
     location?: Coordinate;
     rejected?: boolean;
     completed?: boolean;
@@ -16,6 +17,7 @@ type Coordinate = {
 type GameStatus = {
     text?: string;
     status: boolean;
+    total_score: number;
     objectives: Objective[];
     rejected: Objective[];
 }

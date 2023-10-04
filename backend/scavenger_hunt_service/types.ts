@@ -14,6 +14,7 @@ type Objective = {
     id: number;
     title: string;
     description: string;
+    score: number;
 }
 
 type Objectives = {
