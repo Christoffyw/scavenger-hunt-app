@@ -197,7 +197,7 @@ var syncInterval = setInterval(async function () {
         </div>
         <div class="objective" :class="{ rejected: objective.rejected, incomplete: !objective.completed, complete: objective.completed }" v-for="objective in objectives_display" @click="open_camera(objective.id)">
             <div v-if="!objective.completed" :class="{ score: true, 'score-rejected': objective.rejected}">
-                <h2 class="score-text">+{{ objective.score }}</h2>
+                <h4 class="score-text">+{{ objective.score }}</h4>
             </div>
             <div class="info">
                 <h4 class="objective-title">{{ objective.title }}</h4>
@@ -277,7 +277,7 @@ var syncInterval = setInterval(async function () {
     min-height: 65px;
     line-height: 65px;
     text-align: center;
-    width: 50px;
+    width: 30px;
     border-right-width: 2px;
     border-right-color: #48484877;
     border-right-style: solid;
