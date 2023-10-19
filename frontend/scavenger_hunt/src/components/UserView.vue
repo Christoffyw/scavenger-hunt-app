@@ -15,20 +15,24 @@ let game_status = ref<GameStatus>({
 });
 let time_left_display = ref("Waiting to start..."); 
 let objectives_display = ref<Objective[]>([]);
+let completed_objectives = ref<Objective[]>([]);
 
 onMounted(async () => {
     let total_objectives = await GET(API_URL + "/api/objectives");
     game_status.value = await GET(API_URL + "/api/objectives/" + group_name);
     let objectives = total_objectives.objectives;
     for(let objective_index in objectives) {
-        objectives_display.value.push({
+        let objective = {
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
             score: objectives[objective_index].score,
             rejected: game_status.value.rejected.includes(objectives[objective_index].id),
             completed: game_status.value.objectives.includes(objectives[objective_index].id) && !game_status.value.rejected.includes(objectives[objective_index].id)
-        });
+        };
+        objectives_display.value.push(objective);
+        if(objective.completed)
+            completed_objectives.value.push(objective);
     }
     if(game_status.value.status)
         start_timer();
@@ -135,9 +139,10 @@ async function request_update() {
     let objectives = total_objectives.objectives;
 
     let temp_objectives_display = [];
+    let temp_completed_objectives = [];
     var i = 0;
     for(let objective_index in objectives) {
-        temp_objectives_display.push({
+        let objective = {
             id: objectives[objective_index].id,
             description: objectives[objective_index].description,
             title: objectives[objective_index].title,
@@ -145,42 +150,21 @@ async function request_update() {
             rejected: game_status.value.rejected.includes(objectives[objective_index].id),
             completed: game_status.value.objectives.includes(objectives[objective_index].id) && !game_status.value.rejected.includes(objectives[objective_index].id),
             uploading: objectives_display.value[i].uploading
-        });
+        };
+        temp_objectives_display.push(objective);
+        if(objective.completed)
+            temp_completed_objectives.push(objective);
+
         i++;
     }
     objectives_display.value = temp_objectives_display;
+    completed_objectives.value = temp_completed_objectives;
 }
 
 // SYNC WITH SERVER
 var syncInterval = setInterval(async function () {
-    let total_objectives = await GET(API_URL + "/api/objectives");
-    let response_json = await GET(API_URL + "/api/objectives/" + group_name);
-    game_status.value = response_json;
-    
-    console.log("RESPONSE: " + JSON.stringify(game_status.value.text))
-    if(game_status.value == undefined || game_status.value.text != undefined) {
-        router.push("/");
-        clearInterval(syncInterval);
-        return;
-    }
+    request_update();
 
-    let objectives = total_objectives.objectives;
-
-    let temp_objectives_display = [];
-    var i = 0;
-    for(let objective_index in objectives) {
-        temp_objectives_display.push({
-            id: objectives[objective_index].id,
-            description: objectives[objective_index].description,
-            title: objectives[objective_index].title,
-            score: objectives[objective_index].score,
-            rejected: game_status.value.rejected.includes(objectives[objective_index].id),
-            completed: game_status.value.objectives.includes(objectives[objective_index].id) && !game_status.value.rejected.includes(objectives[objective_index].id),
-            uploading: objectives_display.value[i].uploading
-        });
-        i++;
-    }
-    objectives_display.value = temp_objectives_display;
     if(game_status.value.status)
         start_timer();
 }, 5000);
@@ -192,7 +176,7 @@ var syncInterval = setInterval(async function () {
     <h1 class="count-down">{{ time_left_display }}</h1>
     <div v-if="time_started" class="objectives">
         <div class="header">
-            <h2 class="label">Objectives</h2>
+            <h3 class="label">Objectives ({{ completed_objectives.length }}/{{ objectives_display.length}})</h3>
             <h3 class="label-right">Score: {{ game_status.total_score }}</h3>
         </div>
         <div class="objective" :class="{ rejected: objective.rejected, incomplete: !objective.completed, complete: objective.completed }" v-for="objective in objectives_display" @click="open_camera(objective.id)">
@@ -208,15 +192,6 @@ var syncInterval = setInterval(async function () {
                 <div v-if="objective.uploading" class="lds-ring"><div></div><div></div><div></div><div></div></div>
             </div>
         </div>
-        <!--<div class="complete objective">
-            <div class="info">
-                <h3>Fast Food Lane</h3>
-                <p class="description">Take a picture of 3 burger joints in a row.</p>
-            </div>
-            <div class="preview">
-                <img class="icon complete-icon" src="../assets/checkmark-outline.svg" />
-            </div>
-        </div>-->
     </div>
 </template>
 
@@ -240,11 +215,14 @@ var syncInterval = setInterval(async function () {
     border-color: #c90000;
     color: #ad3535;
 }
-
 .description {
     font-size: small;
+    line-height: 15px;
+    margin-bottom: 0;
 }
-
+.objective-title {
+    margin-bottom: 0;
+}
 .label {
     text-align: left;
     float:left;
@@ -263,8 +241,7 @@ var syncInterval = setInterval(async function () {
 .info {
     float:left;
     padding-left: 10px;
-    min-height: 65px;
-    max-width: 75%;
+    max-width: 65%;
 }
 
 .score-text {
@@ -274,8 +251,8 @@ var syncInterval = setInterval(async function () {
 
 .score {
     float:left;
-    min-height: 65px;
-    line-height: 65px;
+    min-height: 5px;
+    line-height: 85px;
     text-align: center;
     width: 30px;
     border-right-width: 2px;
@@ -290,7 +267,7 @@ var syncInterval = setInterval(async function () {
 .preview {
     float: right;
     min-width: 30px;
-    min-height: 65px;
+    min-height: 85px;
     display: flex;
     align-items: center;
     justify-content: center;

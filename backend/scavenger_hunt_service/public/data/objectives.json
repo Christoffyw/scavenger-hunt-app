@@ -2,14 +2,182 @@
     "objectives": [
     {
         "id": 1,
-        "title": "With the Fris? No Way!",
-        "description": "Pose with a frisbee.",
-        "score": 10
+        "title": "Walkin' on the Curb",
+        "description": "Capture your group walking along a curb",
+        "score": 1
     },
     {
         "id": 2,
-        "title": "Burger Boulevard",
-        "description": "Find 3 restaurants side-by-side.",
+        "title": "Church Visit (Strasburg)",
+        "description": "Stand infront of Strasburg Rd. Church",
+        "score": 1
+    },
+    {
+        "id": 3,
+        "title": "Pants on Fire",
+        "description": "Take a photo of a member on a fire hydrant",
+        "score": 3
+    },
+    {
+        "id": 4,
+        "title": "Construction Zone",
+        "description": "Stand infront of a construction sign",
+        "score": 2
+    },
+    {
+        "id": 5,
+        "title": "Capturing the Competition",
+        "description": "Take a photo of another team",
+        "score": 2
+    },
+    {
+        "id": 6,
+        "title": "Mooooo!",
+        "description": "Take a photo with a cow",
+        "score": 2
+    },
+    {
+        "id": 7,
+        "title": "Church Visit (Avon)",
+        "description": "Stand infront of Avon Rd. Church",
+        "score": 2
+    },
+    {
+        "id": 8,
+        "title": "Pricey Parking",
+        "description": "Take a photo of a parking meter",
+        "score": 3
+    },
+    {
+        "id": 9,
+        "title": "Neigh goes the Horse",
+        "description": "Take a photo with a horse",
+        "score": 3
+    },
+    {
+        "id": 10,
+        "title": "Master of the Farm",
+        "description": "Take a photo with a donkey, llama, or alpaca",
+        "score": 4
+    },
+    {
+        "id": 11,
+        "title": "Pumpkin Poster",
+        "description": "Find a pumpkin spice advertisement",
+        "score": 4
+    },
+    {
+        "id": 12,
+        "title": "Mannequin Mayhem",
+        "description": "Pose like a mannequin at a store in the mall",
+        "score": 4
+    },
+    {
+        "id": 13,
+        "title": "Quit Monkeying Around",
+        "description": "Have your whole team hang from monkey bars",
+        "score": 4
+    },
+    {
+        "id": 14,
+        "title": "A Public Park",
+        "description": "Take a photo of a public park's sign",
+        "score": 4
+    },
+    {
+        "id": 15,
+        "title": "Church Visit (Ancaster)",
+        "description": "Stand infront of the Ancaster Church",
+        "score": 4
+    },
+    {
+        "id": 16,
+        "title": "Plenty o' Pumpkin",
+        "description": "Have your whole team holding a pumpkin",
         "score": 5
+    },
+    {
+        "id": 17,
+        "title": "Outdoor Gallery",
+        "description": "Find a piece of outdoor art",
+        "score": 5
+    },
+    {
+        "id": 18,
+        "title": "Comfy Couch",
+        "description": "Get comfortable in a furniture store's sofa",
+        "score": 5
+    },
+    {
+        "id": 19,
+        "title": "The Daily News",
+        "description": "Take a group photo with today's paper",
+        "score": 6
+    },
+    {
+        "id": 20,
+        "title": "Elevated Experience",
+        "description": "Take a group photo inside an elevator",
+        "score": 6
+    },
+    {
+        "id": 21,
+        "title": "University of Waterloo",
+        "description": "Take a photo of the university's sign",
+        "score": 6
+    },
+    {
+        "id": 22,
+        "title": "University of Laurier",
+        "description": "Take a photo of the university's sign",
+        "score": 6
+    },
+    {
+        "id": 23,
+        "title": "Helping the Community",
+        "description": "Help an elderly person cross the street",
+        "score": 6
+    },
+    {
+        "id": 24,
+        "title": "8th Wonder of the World",
+        "description": "Form a human pyramid with your team",
+        "score": 7
+    },
+    {
+        "id": 25,
+        "title": "Leafy Season",
+        "description": "Take a photo of 2 people in a leaf pile",
+        "score": 8
+    },
+    {
+        "id": 26,
+        "title": "River Rapids",
+        "description": "Take a photo of a team member knee-deep in a rivers",
+        "score": 8
+    },
+    {
+        "id": 27,
+        "title": "Tiny Budget",
+        "description": "Fill up $0.01 worth of gas",
+        "score": 8
+    },
+    {
+        "id": 28,
+        "title": "Lightning Strikepoint",
+        "description": "Find a house or barn with lightning rods",
+        "score": 9
+    },
+    {
+        "id": 29,
+        "title": "University of Guelph",
+        "description": "Take a photo of the university's sign",
+        "score": 10
+    },
+    {
+        "id": 30,
+        "title": "Church Visit (Weston Road)",
+        "description": "Stand infront of Weston Rd. Church",
+        "score": 20
     }
 ]}
