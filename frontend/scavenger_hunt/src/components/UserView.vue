@@ -159,6 +159,13 @@ async function request_update() {
     }
     objectives_display.value = temp_objectives_display;
     completed_objectives.value = temp_completed_objectives;
+
+    let time_offset = game_status.value.end_time - Date.now();
+    time_offset /= 1000;
+    time_offset = Math.round(time_offset);
+    time_offset = Math.max(time_offset, 0);
+
+    time_left = time_offset;
 }
 
 // SYNC WITH SERVER
