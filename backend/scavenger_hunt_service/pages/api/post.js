@@ -1,3 +1,5 @@
+import { aws_upload } from './aws';
+
 const fs = require('fs').promises;
 
 export default async function handler(req, res) {
@@ -28,16 +30,32 @@ export default async function handler(req, res) {
         group_data.at(group_data.indexOf(group)).posts.splice(group.posts.indexOf(objective), 1);
     }
 
-    let date = new Date(Number(timestamp));
-    group_data.at(group_data.indexOf(group)).posts.push({
-        objective_id: objective_id,
-        date: date.toLocaleString("en-US", {timeZone: "America/New_York"}),
-        image_path: image_data//`./data/${group_name}/${objective_id}.png`,
-    });
-    await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));
-    await fs.writeFile(`./public/data/${group_name}/${objective_id}.png`, image_data, 'base64');
-    console.log("Updated storage!")
-    res.status(200).json({ text: `Objective succesfully posted!` });
+    return new Promise((resolve, reject) => {
+        aws_upload({
+            filename: `${group.group_name}_${objective_id}.png`,
+            file: image_data
+        }).then(async (result) => {
+    
+            let date = new Date(Number(timestamp));
+            group_data.at(group_data.indexOf(group)).posts.push({
+                objective_id: objective_id,
+                date: date.toLocaleString("en-US", {timeZone: "America/New_York"}),
+                image_path: result.url
+            });
+            await fs.writeFile("./public/data/groups.json", JSON.stringify(group_data, null, 3));
+            await fs.writeFile(`./public/data/${group_name}/${objective_id}.png`, image_data, 'base64');
+            console.log("Updated storage!")
+            res.status(200).json({ text: `Objective succesfully posted!` });
+            resolve();
+        }).catch(error => {
+            res.json(error);
+            res.status(405).end();
+            resolve();
+        })
+    })
+
+
+
 }
 
 export const config = {

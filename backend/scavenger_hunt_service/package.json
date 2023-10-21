@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.32.6",
+    "aws-sdk": "^2.1478.0",
     "axios": "^1.4.0",
     "date-fns": "^2.29.3",
     "fs": "^0.0.1-security",

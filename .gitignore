@@ -1,2 +1,3 @@
 
 *.exe
+backend/scavenger_hunt_service/pages/api/secrets.js
