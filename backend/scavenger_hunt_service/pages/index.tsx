@@ -12,6 +12,15 @@ import { rejects } from "assert";
 
 const queryClient = new QueryClient()
 
+function get_score(group: Group, objectives: any) {
+    var score = 0;
+    group.posts.forEach(post => {
+        if(!post.rejected)
+            score += objectives.data?.objectives.find(obj => obj.id == post.objective_id).score;
+    })
+    return score;
+}
+
 function sort(group: Group, objectives: any, remove_post: any, reject: any) {
     if(group.posts.length < 1)
         return null;
@@ -245,6 +254,7 @@ function Panel() {
                 query.data?.map(group =>
                     <div key={group.group_name}>
                         <h2>{group.group_name}</h2>
+                        <h3>Score: {get_score(group, objectives)}</h3>
                         <button
                             onClick={() => {
                                 remove_group.mutate({
