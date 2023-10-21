@@ -24,8 +24,9 @@ function sort(group: Group, objectives: any, remove_post: any, reject: any) {
             {
                 group.posts.map(post => 
                     <div key={post.objective_id} className={post.rejected ? "post rejected" : "post"}>
-                        <div className="center"><h3>#{post.objective_id} - {objectives.data?.objectives.find(obj => obj.id == post.objective_id).title}</h3></div>
-                        <div className="center"><p>Submited At: {post.date}</p></div>
+                        <div className="center"><h3 className="objective-title">#{post.objective_id} - {objectives.data?.objectives.find(obj => obj.id == post.objective_id).title}</h3></div>
+                        <div className="center"><p className="objective-description">{objectives.data?.objectives.find(obj => obj.id == post.objective_id).description}</p></div>
+                        <div className="center"><p className="timestamp">Submited At: {post.date}</p></div>
                         
                         <div className="buttonGroup">
                             <button
@@ -50,7 +51,7 @@ function sort(group: Group, objectives: any, remove_post: any, reject: any) {
                             </button>
                         </div>
                         
-                        <div className="center"><img src={"data:image/png;base64," + post.image_path} width="500"/></div>
+                        <div className="center"><img src={ post.image_path } width="500"/></div>
                     </div>
                 )
             }
@@ -66,6 +67,15 @@ function sort(group: Group, objectives: any, remove_post: any, reject: any) {
                 }
                 a:hover {
                     color: #535bf2;
+                }
+
+                .timestamp {
+                    font-size: 15px;
+                    margin-bottom: 5px;
+                }
+
+                .objective-title {
+                    margin-bottom: 0px;
                 }
                 
                 .buttonGroup {
